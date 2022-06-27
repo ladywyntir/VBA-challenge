@@ -135,7 +135,7 @@ Sub tickerLoop():
                 If (percentChange > greatPerInc) Then       'if the current % of change is greater than the greatest % increase
                     greatPerInc = percentChange                 'set the % in the increase variable
                     greatTkrInc = tickerSymbol                  'set the ticker symbol in the variable
-                ElseIf (percentChange < greatPerDec) Then   'if the current % of change is greater than the greatest % decrease
+                ElseIf (percentChange < greatPerDec) Then   'if the current % of change is less than the greatest % decrease
                     greatPerDec = percentChange                 'set the % in the decrease variable
                     greatTkrDec = tickerSymbol                  'set the ticker symbol in the variable
                 End If
