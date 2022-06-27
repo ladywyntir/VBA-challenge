@@ -72,7 +72,7 @@ Sub tickerLoop():
         'Calculating the last row
         lastRow = currentWs.Cells(Rows.Count, 1).End(xlUp).Row
         
-        'Setting the headers for the spreadsheet
+        'Setting the headers for the spreadsheet, columns I-L and then O-P
         currentWs.Range("I1:L1").Font.Bold = True             'bold font
         currentWs.Range("I1").Value = "Ticker Symbol"
         currentWs.Range("J1").Value = "Yearly Change"
@@ -102,12 +102,8 @@ Sub tickerLoop():
                 
                 
                 'MATH--------------------------------------------------
-                'Calculate the yearly change (delta)
-                yearlyChange = eoy_closedPrice - soy_openPrice
-                
-                'Calculate the percent of change
-                percentChange = (yearlyChange / soy_openPrice) * 100
-                
+                yearlyChange = eoy_closedPrice - soy_openPrice          'Calculate the yearly change (delta)
+                percentChange = (yearlyChange / soy_openPrice) * 100    'Calculate the percent of yearly change
                 '------------------------------------------------------
                 
                 'Display Summaries-------------------------------------
@@ -136,26 +132,26 @@ Sub tickerLoop():
                 
                                                 
                 'Bonus calculations
-                If (percentChange > greatPerInc) Then
-                    greatPerInc = percentChange
-                    greatTkrInc = tickerSymbol
-                ElseIf (percentChange < greatPerDec) Then
-                    greatPerDec = percentChange
-                    greatTkrDec = tickerSymbol
+                If (percentChange > greatPerInc) Then       'if the current % of change is greater than the greatest % increase
+                    greatPerInc = percentChange                 'set the % in the increase variable
+                    greatTkrInc = tickerSymbol                  'set the ticker symbol in the variable
+                ElseIf (percentChange < greatPerDec) Then   'if the current % of change is greater than the greatest % decrease
+                    greatPerDec = percentChange                 'set the % in the decrease variable
+                    greatTkrDec = tickerSymbol                  'set the ticker symbol in the variable
                 End If
        
-                If (totalStockVol > greatTltVol) Then
-                    greatTltVol = totalStockVol
-                    greatTkrTtlVol = tickerSymbol
+                If (totalStockVol > greatTltVol) Then       'if the current total stock volume is greater than the greatest total volume
+                    greatTltVol = totalStockVol                 'set the total volume in the greatest total variable
+                    greatTkrTtlVol = tickerSymbol               'set the ticker symbol in the variable
                 End If
                 
-                'Reset the summaries for next ticker symbol
+                'Reset the variable values so the next ticker symbols can be summarized
                 yearlyChange = 0
                 percentChange = 0
                 totalStockVol = 0
                                 
             Else
-             'If there is no change add total Stock Volume
+             'If there is no change to the ticker symbol, add total Stock Volume
             totalStockVol = totalStockVol + currentWs.Cells(i, 7).Value
             
             End If
@@ -167,7 +163,7 @@ Sub tickerLoop():
             'Used this as a test to run through the Worksheets
             'MsgBox ("This is sheet " + currentWs.Name)
                 
-            'Print the Greatest totals
+            'Print the Greatest totals to the right of our other summary columns
             currentWs.Range("P2").Value = greatTkrInc
             currentWs.Range("Q2").Value = (CStr(greatPerInc) & "%")
             currentWs.Range("P3").Value = greatTkrDec
